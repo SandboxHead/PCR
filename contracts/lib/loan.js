@@ -3,6 +3,12 @@
 // Utility class for ledger state
 const State = require('./../ledger-api/state.js');
 
+const loanState = {
+	PENDING: 0,
+	ONGOING: 1,
+	FINISHED: 2
+};
+
 class Installment {
 	constructor(amount, date, lateTime) {
 		this.amount = amount;
@@ -109,4 +115,24 @@ class Loan extends State {
 		this.installments.push(installment);
 	}
 
+    /**
+     * Deserialize a state data to commercial paper
+     * @param {Buffer} data to form back into the object
+     */
+    static deserialize(data) {
+        return State.deserializeClass(data, Loan);
+    }
+
+    /**
+     * Factory method to create a commercial paper object
+     */
+    static createInstance(borrowerIdentity, lenderIdentity, amount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
+        return new Loan({ borrowerIdentity, lenderIdentity, amount, assets, interest, [], amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanState.PENDING });
+    }
+
+    static getClass() {
+        return 'Loan';
+    }
 }
+
+module.exports = Loan;

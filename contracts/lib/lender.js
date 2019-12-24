@@ -67,7 +67,7 @@ class Lender extends State {
      * Factory method to create a commercial paper object
      */
     static createInstance(identity, pendingLoans, ongoingLoans, prevLoans, consents) {
-        return new CommercialPaper({ identity, pendingLoans, ongoingLoans, prevLoans, consents });
+        return new Lender({ identity, pendingLoans, ongoingLoans, prevLoans, consents });
     }
 
     static getClass() {

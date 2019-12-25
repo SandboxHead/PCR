@@ -65,4 +65,55 @@ class PCRContract extends Contract {
 		return loanKey;
 	}
 	
+	async payInstallment(ctx, loanKey, amountPaid, nextInstallmentAmount, nextInstallmentDate) {
+		var invokerID = ctx.stub.getCreator();
+		
+		var loan = ctx.loanList.getLoan(loanKey);
+
+		if(invokerID !== loan.getLenderIdentity()){
+			throw new Error("Lender is not invoker");
+		}
+
+		loan.addInstallment(amountPaid);
+		loan.setNextInstallmentAmount(nextInstallmentAmount);
+		loan.setNextInstallmentDate(nextInstallmentDate);
+		loan.setRemainingAmount(loan.getRemainingAmount() - amountPaid);
+
+		await.ctx.loanList.updateLoan(loan);
+	}
+
+	async giveConsent(ctx, lenderId) {
+		var invokerId = ctx.stub.getCreator();
+
+		if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
+			throw new Error("Invoker is not a Borrower");
+		}
+
+		var borrower = ctx.borrowerList.getBorrower(invokerId);
+		var lender = ctx.lenderList.getLender(lenderId);
+
+		borrower.giveConsent(lenderId);
+		lender.addConsent(invokerId);
+
+		await.ctx.borrowerList.updateBorrower();
+		await.ctx.lenderList.updateLender();
+	} 
+
+	async revokeConsent(ctx, lenderId) {
+		var invokerId = ctx.stub.getCreator();
+
+		if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
+			throw new Error("Invoker is not a Borrower");
+		}
+
+		var borrower = ctx.borrowerList.getBorrower(invokerId);
+		var lender = ctx.lenderList.getLender(lenderId);
+
+		borrower.revokeConsent(lenderId);
+		lender.removeConsent(invokerId);
+
+		await.ctx.borrowerList.updateBorrower();
+		await.ctx.lenderList.updateLender();
+	} 
+
 }

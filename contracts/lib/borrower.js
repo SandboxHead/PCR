@@ -122,7 +122,12 @@ class Borrower extends State {
         return State.deserializeClass(data, Borrower);
     }
 
-    static createInstance(identity, consents, ongoingLoans, prevLoan) {
+    static createInstance(identity, consents, pendingLoans, ongoingLoans, prevLoan, assetValues) {
+    	var assets = [];
+    	for (index = 0; index < assetValues.length; index++){
+    		var asset = new Asset(assetValues[index]);
+    		assets.push(asset);
+    	}
         return new Borrower({ idnetity, consents, pendingLoans, ongoingLoans, prevLoan, assets });
     }
 

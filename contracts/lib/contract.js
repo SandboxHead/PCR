@@ -174,4 +174,28 @@ class PCRContract extends Contract {
 		await ctx.borrowerList.updateBorrower(borrower);
 		await ctx.lenderList.updateLender(lender);
 	}
+
+	async addBorrower(ctx, identity, assetValues){
+		var invokerID = ctx.stub.getCreator();
+
+		if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
+			throw new Error('Invoker is not an admin');
+		}
+
+		var borrower = Borrower.createInstance(identity, [], [], [], [], assetValues);
+
+		await ctx.borrowerList.addBorrower(borrower);
+	}
+
+	async addLender(ctx, identity){
+		var invokerID = ctx.stub.getCreator();
+
+		if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
+			throw new Error('Invoker is not an admin');
+		}
+
+		var lender = Lender.createInstance(identity, [], [], [], []);
+
+		await ctx.lenderList.addBorrower(lender);
+	}
 }

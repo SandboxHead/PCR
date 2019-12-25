@@ -31,15 +31,19 @@ class Installment {
 
 class Loan extends State {
 	constructor(obj) {
-		super(Loan.getClass(), [obj.loadId]);
+		super(Loan.getClass(), [obj.lenderIdentity, obj.borrowerIdentity, obj.loanCreationTime]);
 		Object.asign(this, obj);
 	}
     
     /**
      * Basic getters and setters
     */
-    getLoanId() {
-    	return this.loadId;
+    // getLoanId() {
+    // 	return this.loanId;
+    // }
+
+    getLoanCreationTime(){
+    	return this.loanCreationTime;
     }
 
     getBorrowerIdentity() {
@@ -127,7 +131,8 @@ class Loan extends State {
      * Factory method to create a commercial paper object
      */
     static createInstance(borrowerIdentity, lenderIdentity, amount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
-        return new Loan({ borrowerIdentity, lenderIdentity, amount, assets, interest, [], amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanState.PENDING });
+    	let currTime = Date(Date.now())
+        return new Loan({ borrowerIdentity, lenderIdentity, loanCreationTime, amount, assets, interest, [], amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanState.PENDING });
     }
 
     static getClass() {

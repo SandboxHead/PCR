@@ -131,7 +131,7 @@ class Loan extends State {
      * Factory method to create a commercial paper object
      */
     static createInstance(borrowerIdentity, lenderIdentity, amount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
-    	let currTime = Date(Date.now())
+    	let loanCreationTime = Date(Date.now())
         return new Loan({ borrowerIdentity, lenderIdentity, loanCreationTime, amount, assets, interest, [], amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanState.PENDING });
     }
 

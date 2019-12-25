@@ -37,6 +37,15 @@ class Lender extends State {
     	return false;
     }
 
+    approveLoan(loanId) {
+        var index = this.pendingLoans.indexof(loanId);
+        if(index === -1){
+            throw new Error("Loan Id: " + loanId + " is not pending.");
+        }
+        this.ongoingLoans.push(loanId);
+        this.pendingLoans.splice(index);        
+    }
+
     completeLoan(loanId) {
     	index = this.ongoingLoans.indexof(loanId);
     	if (index > -1) {

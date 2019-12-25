@@ -37,27 +37,17 @@ class Borrower extends State {
 		return this.consents.includes(identity);
 	}
 
-	giveConsent(invoker, identity) {
-		if(this.getIdentity === invoker){
-			this.consents.push(identity)	;
-		}
-		else{
-			throw new Error(invoker + "does not have permission to add" + identity);
-		}
+	giveConsent(identity) {
+		this.consents.push(identity);
 	}
 
-	revokeConsent(invoker, identity){
-		if(this.getIdentity === invoker){
-			var index = this.consents.indexof(identity);
-			if(index != -1){
-				this.consents.splice(index);
-			}
-			else{
-				throw new Error(identity + " does not contain consent");
-			}
+	revokeConsent(identity){
+		var index = this.consents.indexof(identity);
+		if(index != -1){
+			this.consents.splice(index);
 		}
 		else{
-			throw new Error(invoker + " does not have permission to delete" + identity);
+			throw new Error(identity + " does not contain consent");
 		}
 	}
 
@@ -65,36 +55,25 @@ class Borrower extends State {
 		this.pendingLoans.push(loanId);	
 	}
 
-	approveLoan(invoker, loanId){
-		if(this.getIdentity === invoker){
-			var index = this.pendingLoans.indexof(loanId);
-			if(index === -1){
-				throw new Error("Loan Id: " + loanId + " is not pending.");
-			}
-			this.ongoingLoans.push(loanId);
-			this.pendingLoans.splice(index);
+	approveLoan(loanId){
+		var index = this.pendingLoans.indexof(loanId);
+		if(index === -1){
+			throw new Error("Loan Id: " + loanId + " is not pending.");
 		}
-		else{
-			throw new Error(invoker + "does not have permission to approve this loan.");
-		}
-		return "approved"
+		this.ongoingLoans.push(loanId);
+		this.pendingLoans.splice(index);
 	}
 
-	revertApproved(invoker, loanId){
-		if(this.getIdentity === invoker){
-			var index = this.ongoingLoans.indexof(loanId);
-			if(index === -1){
-				throw new Error("Loan Id: " + loanId + " is not approved.");
-			}
-			this.ongoingLoans.splice(loanId);
-			this.pendingLoans.push(index);
+	revertApproved(loanId){
+		var index = this.ongoingLoans.indexof(loanId);
+		if(index === -1){
+			throw new Error("Loan Id: " + loanId + " is not approved.");
 		}
-		else{
-			throw new Error(invoker + "does not have permission to revoke this loan.");
-		}
+		this.ongoingLoans.splice(loanId);
+		this.pendingLoans.push(index);
 	}
 
-	clearLoan(invoker, loadId){
+	completeLoan(loadId){
 		var index = this.ongoingLoans.indexof(loanid);
 		if(index === -1){
 			throw new Error("Loan Id: " + loanId + " does not belong to this borrower.");

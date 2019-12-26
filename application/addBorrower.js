@@ -15,15 +15,6 @@ function getArguments() {
 	});
 
 	parser.addArgument(
-		['-c', '--channel'],
-		{
-			help: 'Channel Name',
-			metavar:'',
-			required:true
-
-		}
-	);
-	parser.addArgument(
 		['-i', '--identity'],
 		{
 			help: 'Borrower\'s Identity (x.509 certifcate)',
@@ -63,7 +54,7 @@ async function main() {
 
 	    const confirmLoanResponse = await contract.submitTransaction("addBorrower", args.identity, [])
 
-	    console.log("Borrower Added.");
+	    console.log("Borrower Added");
 	    console.log("Transaction Completed");
 	}
 
@@ -80,11 +71,11 @@ async function main() {
 
 main().then(() => {
 
-    console.log('Issue program complete.');
+    console.log('Add Borrower program complete.');
 
 }).catch((e) => {
 
-    console.log('Issue program exception.');
+    console.log('Add Borrower program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

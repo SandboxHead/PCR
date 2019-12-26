@@ -13,9 +13,9 @@ function getArguments() {
 	});
 
 	parser.addArgument(
-		['-i', '--identity'],
+		['-k', '--key'],
 		{
-			help: 'Lender\'s identity',
+			help: 'Loan Key',
 			metavar:'',
 			required:true
 
@@ -27,7 +27,7 @@ function getArguments() {
 
 async function main() {
 
-// 	Arguments : Username, wallet, channelName, lenderId
+// 	Arguments : loanKey
 
 	var args = getArguments();
 	console.dir(args);
@@ -50,9 +50,9 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const confirmLoanResponse = await contract.submitTransaction("revokeConsent", args.identity)
+	    const confirmLoanResponse = await contract.submitTransaction("completeLoan", args.key);
 
-	    console.log("Consent Revoked.");
+	    console.log("Loan completed.");
 	    console.log("Transaction Completed");
 	}
 
@@ -69,11 +69,11 @@ async function main() {
 
 main().then(() => {
 
-    console.log('Revoke Consent program complete.');
+    console.log('Complete Loan program complete.');
 
 }).catch((e) => {
 
-    console.log('Revoke Consent exception.');
+    console.log('Complete Loan program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

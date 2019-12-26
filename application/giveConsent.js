@@ -6,9 +6,32 @@ const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 // const Lender = require('../')
 
+function getArguments() {
+	var parser = new ArgumentParser({
+		version: '0.0.1',
+		addHelp : true
+	});
+
+	parser.addArgument(
+		['-i', '--identity'],
+		{
+			help: 'Lender\'s identity',
+			metavar:'',
+			required:true
+
+		}
+	);
+	var args = parser.parseArgs();
+	return args;
+}
+
 async function main() {
 
 // 	Arguments : Username, wallet, channelName, lenderId
+
+	var args = getArguments();
+	console.dir(args);
+
 
 	const gateway = new Gateway();
 
@@ -28,7 +51,7 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const confirmLoanResponse = await contract.submitTransaction("giveConsent", lenderId)
+	    const confirmLoanResponse = await contract.submitTransaction("giveConsent", args.identity)
 
 	    console.log("Consent Given.");
 	    console.log("Transaction Completed");
@@ -47,11 +70,11 @@ async function main() {
 
 main().then(() => {
 
-    console.log('Issue program complete.');
+    console.log('Give Consent program complete.');
 
 }).catch((e) => {
 
-    console.log('Issue program exception.');
+    console.log('Give Consent program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

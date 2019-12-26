@@ -6,9 +6,31 @@ const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 // const Lender = require('../')
 
+function getArguments() {
+	var parser = new ArgumentParser({
+		version: '0.0.1',
+		addHelp : true
+	});
+
+	parser.addArgument(
+		['-k', '--key'],
+		{
+			help: 'Loan Key',
+			metavar:'',
+			required:true
+
+		}
+	);
+	var args = parser.parseArgs();
+	return args;
+}
+
 async function main() {
 
-// 	Arguments : Username, wallet, channelName, loanKey
+// 	Arguments : loanKey
+
+	var args = getArguments();
+	console.dir(args);
 
 	const gateway = new Gateway();
 
@@ -28,7 +50,7 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const confirmLoanResponse = await contract.submitTransaction("confirmLoan", loanKey)
+	    const confirmLoanResponse = await contract.submitTransaction("confirmLoan", args.key);
 
 	    console.log("Loan confirmation done.");
 	    console.log("Transaction Completed");
@@ -47,11 +69,11 @@ async function main() {
 
 main().then(() => {
 
-    console.log('Issue program complete.');
+    console.log('Confirm Loan program complete.');
 
 }).catch((e) => {
 
-    console.log('Issue program exception.');
+    console.log('Confirm Loan program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

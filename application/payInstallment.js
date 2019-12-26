@@ -5,9 +5,58 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
+function getArguments() {
+	var parser = new ArgumentParser({
+		version: '0.0.1',
+		addHelp : true
+	});
+
+	parser.addArgument(
+		['-k', '--key'],
+		{
+			help: 'Loan Key',
+			metavar:'',
+			required:true
+
+		}
+	);
+	parser.addArgument(
+		['-ap', '--amountPaid'],
+		{
+			help: 'Amount Paid',
+			metavar:'',
+			required:true
+
+		}
+	);
+	parser.addArgument(
+		['-na', '--nextAmount'],
+		{
+			help: 'Next Installment Amount',
+			metavar:'',
+			required:true
+
+		}
+	);
+	parser.addArgument(
+		['-nd', '--nextDate'],
+		{
+			help: 'Next Installment Date',
+			metavar:'',
+			required:true
+
+		}
+	);
+	var args = parser.parseArgs();
+	return args;
+}
+
 async function main() {
 
 // 	Arguments : 
+
+	var args = getArguments();
+	console.dir(args);
 
 	const gateway = new Gateway();
 
@@ -30,7 +79,7 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const initiateLoanResponse = await contract.submitTransaction("payInstallment", loanKey, amountPaid, nextInstallmentAmount, nextInstallmentDate);
+	    const initiateLoanResponse = await contract.submitTransaction("payInstallment", args.key, args.amountPaid, args.nextAmount, args.nextDate);
 
 	    console.log("Installment Paid.");
 
@@ -50,11 +99,11 @@ async function main() {
 
 main().then(() => {
 
-    console.log('Issue program complete.');
+    console.log('Pay Installment program complete.');
 
 }).catch((e) => {
 
-    console.log('Issue program exception.');
+    console.log('Pay Installment program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

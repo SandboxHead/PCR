@@ -25,7 +25,7 @@ class PCRContext extends Context {
 
 class PCRContract extends Contract {
 	constructor() {
-		super('PCR')
+		super('pcr')
 	}
 
 	createContext(){

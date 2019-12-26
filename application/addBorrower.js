@@ -3,12 +3,45 @@
 // Bring key classes into scope, most importantly Fabric SDK network class
 const fs = require('fs');
 const yaml = require('js-yaml');
+var ArgumentParser = require('argparse').ArgumentParser;
+
 const { FileSystemWallet, Gateway } = require('fabric-network');
 // const Lender = require('../')
+
+function getArguments() {
+	var parser = new ArgumentParser({
+		version: '0.0.1',
+		addHelp : true
+	});
+
+	parser.addArgument(
+		['-c', '--channel'],
+		{
+			help: 'Channel Name',
+			metavar:'',
+			required:true
+
+		}
+	);
+	parser.addArgument(
+		['-i', '--identity'],
+		{
+			help: 'Borrower\'s Identity (x.509 certifcate)',
+			metavar:'',
+			required:true
+		}
+	);
+	var args = parser.parseArgs();
+	return args;
+}
 
 async function main() {
 
 // 	Arguments : Username, wallet, channelName, identity, assetValues
+	
+	var args = getArguments();
+	console.dir(args);
+
 
 	const gateway = new Gateway();
 
@@ -28,7 +61,7 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const confirmLoanResponse = await contract.submitTransaction("addBorrower", identity, assetValues)
+	    const confirmLoanResponse = await contract.submitTransaction("addBorrower", args.identity, [])
 
 	    console.log("Borrower Added.");
 	    console.log("Transaction Completed");

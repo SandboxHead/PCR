@@ -8,7 +8,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 
 async function main() {
 
-// 	Arguments : Username, wallet, channelName, loanKey
+// 	Arguments : Username, wallet, channelName, identity, assetValues
 
 	const gateway = new Gateway();
 
@@ -28,9 +28,9 @@ async function main() {
 
 	    const contract = await network.getContract('contract');
 
-	    const confirmLoanResponse = await contract.submitTransaction("confirmLoan", loanKey)
+	    const confirmLoanResponse = await contract.submitTransaction("addBorrower", identity, assetValues)
 
-	    console.log("Loan confirmation done.");
+	    console.log("Borrower Added.");
 	    console.log("Transaction Completed");
 	}
 

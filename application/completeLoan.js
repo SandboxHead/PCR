@@ -5,6 +5,7 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 // const Lender = require('../')
+var ArgumentParser = require('argparse').ArgumentParser;
 
 function getArguments() {
 	var parser = new ArgumentParser({

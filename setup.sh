@@ -4,7 +4,7 @@ bin/cryptogen generate --config=./crypto-config.yaml
 
 #set PATH as the current working directory
 export FABRIC_CFG_PATH=$PWD
-
+mkdir -p channel-artifacts
 # create genesis block using configtx.yaml
 bin/configtxgen -profile PCRGenesis -channelID pcr-channel -outputBlock ./channel-artifacts/genesis.block
 

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# stop the network if up
+./stop.sh
+
+# create identities for all the organisations
 bin/cryptogen generate --config=./crypto-config.yaml
 
 #set PATH as the current working directory
@@ -17,3 +21,5 @@ bin/configtxgen -profile PCRChannel -outputAnchorPeersUpdate ./channel-artifacts
 bin/configtxgen -profile PCRChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
 
 bin/configtxgen -profile PCRChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+
+docker-compose -f docker-compose.yaml up -d

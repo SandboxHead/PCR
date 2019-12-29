@@ -13,7 +13,7 @@ mkdir -p channel-artifacts
 bin/configtxgen -profile PCRGenesis -channelID pcr-channel -outputBlock ./channel-artifacts/genesis.block
 
 # create channel
-export CHANNEL_NAME=pcr-channel  && bin/configtxgen -profile PCRChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+export CHANNEL_NAME="pcr-channel"  && bin/configtxgen -profile PCRChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
 
 # Add anchor peers for orgnaisations with peers
 bin/configtxgen -profile PCRChannel -outputAnchorPeersUpdate ./channel-artifacts/Org0MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org0MSP

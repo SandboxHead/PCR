@@ -39,9 +39,9 @@ class PCRContract extends Contract {
 	async initiateLoan(ctx, lenderId, borrowerId, loanAmount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
 		var invokerID = ctx.stub.getCreator();
 		
-		if(ctx.stub.getAttributeValue('OU') !== "Lender"){
-			throw new Error("Invoker is not a lender")
-		}
+		// if(ctx.stub.getAttributeValue('OU') !== "Lender"){
+		// 	throw new Error("Invoker is not a lender")
+		// }
 
 		if(invokerID !== lenderId){
 			throw new Error("Lender is not invoker");
@@ -85,9 +85,9 @@ class PCRContract extends Contract {
 	async giveConsent(ctx, lenderId) {
 		var invokerId = ctx.stub.getCreator();
 
-		if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
-			throw new Error("Invoker is not a Borrower");
-		}
+		// if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
+		// 	throw new Error("Invoker is not a Borrower");
+		// }
 
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
@@ -102,9 +102,9 @@ class PCRContract extends Contract {
 	async revokeConsent(ctx, lenderId) {
 		var invokerId = ctx.stub.getCreator();
 
-		if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
-			throw new Error("Invoker is not a Borrower");
-		}
+		// if(ctx.stub.getAttributeValue('OU') !== "Borrower"){
+		// 	throw new Error("Invoker is not a Borrower");
+		// }
 
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
@@ -120,9 +120,9 @@ class PCRContract extends Contract {
 	async confirmLoan(ctx, loanKey) {
 		var invokerID = ctx.stub.getCreator();
 
-		if (ctx.stub.getAttributeValue('OU') !== 'Borrower') {
-			throw new Error('Invoker is not a borrower');
-		}
+		// if (ctx.stub.getAttributeValue('OU') !== 'Borrower') {
+		// 	throw new Error('Invoker is not a borrower');
+		// }
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
@@ -149,9 +149,9 @@ class PCRContract extends Contract {
 	async completeLoan(ctx, loanKey) {
 		var invokerID = ctx.stub.getCreator();
 
-		if (ctx.stub.getAttributeValue('OU') !== 'Lender') {
-			throw new Error('Invoker is not a Lender');
-		}
+		// if (ctx.stub.getAttributeValue('OU') !== 'Lender') {
+		// 	throw new Error('Invoker is not a Lender');
+		// }
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
@@ -178,9 +178,9 @@ class PCRContract extends Contract {
 	async addBorrower(ctx, identity, assetValues){
 		var invokerID = ctx.stub.getCreator();
 
-		if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
-			throw new Error('Invoker is not an admin');
-		}
+		// if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
+		// 	throw new Error('Invoker is not an admin');
+		// }
 
 		var borrower = Borrower.createInstance(identity, [], [], [], [], assetValues);
 
@@ -190,9 +190,9 @@ class PCRContract extends Contract {
 	async addLender(ctx, identity){
 		var invokerID = ctx.stub.getCreator();
 
-		if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
-			throw new Error('Invoker is not an admin');
-		}
+		// if (ctx.stub.getAttributeValue('OU') !== 'Admin') {
+		// 	throw new Error('Invoker is not an admin');
+		// }
 
 		var lender = Lender.createInstance(identity, [], [], [], []);
 

@@ -31,7 +31,7 @@ services:
       - ./crypto-config/peerOrganizations/lender.rbi.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_lender
     networks:
-      - rbi
+      - pcr
 
   ca-borrower.rbi.com:
     image: hyperledger/fabric-ca
@@ -47,9 +47,9 @@ services:
     command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.borrower.rbi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA_BORROWER_PRIVATE_KEY} -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/borrower.rbi.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_lender
+    container_name: ca_borrower
     networks:
-      - rbi
+      - pcr
 
   ca-org0.rbi.com:
     image: hyperledger/fabric-ca
@@ -65,9 +65,9 @@ services:
     command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org0.rbi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA_ORG0_PRIVATE_KEY} -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org0.rbi.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_lender
+    container_name: ca_org0
     networks:
-      - rbi
+      - pcr
 
   ca-org1.rbi.com:
     image: hyperledger/fabric-ca
@@ -83,9 +83,9 @@ services:
     command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org1.rbi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA_ORG1_PRIVATE_KEY} -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org1.rbi.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_lender
+    container_name: ca_org1
     networks:
-      - rbi
+      - pcr
 
   ca-org2.rbi.com:
     image: hyperledger/fabric-ca
@@ -101,9 +101,9 @@ services:
     command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.org2.rbi.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/${CA_ORG2_PRIVATE_KEY} -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org2.rbi.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca_lender
+    container_name: ca_org2
     networks:
-      - rbi
+      - pcr
 
 
 
@@ -135,11 +135,11 @@ services:
         - ./crypto-config/ordererOrganizations/rbi.com/orderers/orderer.rbi.com/:/etc/hyperledger/orderer/msp
         - ./crypto-config/ordererOrganizations/rbi.com/orderers/orderer.rbi.com/tls/:/var/hyperledger/orderer/tls
     networks:
-      - basic
+      - pcr
 
   peer0.org0.rbi.com:
     container_name: peer0.org0.rbi.com
-
+    image: hyperledger/fabric-peer
     environment:
       - CORE_PEER_ID=peer0.org0.rbi.com
       - CORE_PEER_ADDRESS=peer0.org0.rbi.com:7051
@@ -189,7 +189,7 @@ services:
 
   peer0.org1.rbi.com:
     container_name: peer0.org1.rbi.com
-
+    image: hyperledger/fabric-peer
     environment:
       - CORE_PEER_ID=peer0.org1.rbi.com
       - CORE_PEER_ADDRESS=peer0.org1.rbi.com:8051
@@ -239,7 +239,7 @@ services:
 
   peer0.org2.rbi.com:
     container_name: peer0.org2.rbi.com
-
+    image: hyperledger/fabric-peer
     environment:
       - CORE_PEER_ID=peer0.org2.rbi.com
       - CORE_PEER_ADDRESS=peer0.org2.rbi.com:9051
@@ -348,10 +348,10 @@ services:
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
-      - orderer.example.com
-      - peer0.org0.example.com
-      - peer0.org1.example.com
-      - peer0.org2.example.com
+      - orderer.rbi.com
+      - peer0.org0.rbi.com
+      - peer0.org1.rbi.com
+      - peer0.org2.rbi.com
       - ca-lender.rbi.com
       - ca-borrower.rbi.com
       - ca-org0.rbi.com

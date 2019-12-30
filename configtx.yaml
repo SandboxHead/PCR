@@ -27,6 +27,17 @@ Organizations:
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/rbi.com/msp
 
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+
     - &Org0
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
@@ -36,6 +47,17 @@ Organizations:
         ID: Org0MSP
 
         MSPDir: crypto-config/peerOrganizations/org0.rbi.com/msp
+
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org0MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org0MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org0MSP.admin')"
 
         # leave this flag set to true.
         AnchorPeers:
@@ -55,6 +77,17 @@ Organizations:
 
         MSPDir: crypto-config/peerOrganizations/org1.rbi.com/msp
 
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org1MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org1MSP.admin')"
+
         # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -72,6 +105,17 @@ Organizations:
         ID: Org2MSP
 
         MSPDir: crypto-config/peerOrganizations/org2.rbi.com/msp
+
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('Org2MSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('Org2MSP.admin')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
@@ -165,6 +209,20 @@ Application: &ApplicationDefaults
     # the application side of the network
     Organizations:
 
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
 ################################################################################
 #
 #   SECTION: Orderer
@@ -180,7 +238,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.example.com:7050
+        - orderer.rbi.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -209,6 +267,22 @@ Orderer: &OrdererDefaults
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
     Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        # BlockValidation specifies what signatures must be included in the block
+        # from the orderer for the peer to validate it.
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
 
 ################################################################################
 #
@@ -268,7 +342,7 @@ Profiles:
                     - *Org2
 
     PCRChannel:
-        Consortium: PCRConsortium
+        Consortium: SampleConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults

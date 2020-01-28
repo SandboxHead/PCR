@@ -36,6 +36,20 @@ class PCRContract extends Contract {
 		console.log('Instantiate the contract')
 	}
 
+
+	async query(ctx, borrowerId){
+		var invokerID = ctx.stub.getCreator();
+
+		var borrower = ctx.borrowerList.getBorrower();
+
+		if(invokerID !== borrower.getBorrowerIdentity() && !borrower.checkConsent(invokerID)){
+			throw new Error("Invoker does not have consent to query.");
+		}
+		return borrower.toBuffer();
+	}
+
+
+
 	async initiateLoan(ctx, lenderId, borrowerId, loanAmount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
 		var invokerID = ctx.stub.getCreator();
 		
@@ -89,8 +103,13 @@ class PCRContract extends Contract {
 		// 	throw new Error("Invoker is not a Borrower");
 		// }
 
+
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
+
+		if(invokerId !== borrower.getBorrowerIdentity()){
+			throw new Error("Borrower is not invoker.")
+		}
 
 		borrower.giveConsent(lenderId);
 		lender.addConsent(invokerId);
@@ -108,6 +127,10 @@ class PCRContract extends Contract {
 
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
+
+		if(invokerId !== borrower.getBorrowerIdentity()){
+			throw new Error("Borrower is not invoker.")
+		}
 
 		borrower.revokeConsent(lenderId);
 		lender.removeConsent(invokerId);

@@ -47,11 +47,11 @@ class Loan extends State {
     }
 
     getBorrowerIdentity() {
-    	returnt this.borrowerIdentity;
+    	return this.borrowerIdentity;
     }
 	
     getLenderIdentity() {
-    	returnt this.lenderIdentity;
+    	return this.lenderIdentity;
     }
 
     getAmount() {
@@ -131,8 +131,10 @@ class Loan extends State {
      * Factory method to create a commercial paper object
      */
     static createInstance(borrowerIdentity, lenderIdentity, amount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
-    	let loanCreationTime = Date(Date.now())
-        return new Loan({ borrowerIdentity, lenderIdentity, loanCreationTime, amount, assets, interest, [], amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanState.PENDING });
+		let loanCreationTime = Date(Date.now());
+		var installmentList = [];
+		var loanst = loanState.PENDING;
+        return new Loan({ borrowerIdentity, lenderIdentity, loanCreationTime, amount, assets, interest, installmentList, amount, interest, lastInstallmentDate, nextInstallmentDate ,nextInstallmentAmount, loanst });
     }
 
     static getClass() {

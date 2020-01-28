@@ -36,6 +36,18 @@ class PCRContract extends Contract {
 		console.log('Instantiate the contract')
 	}
 
+	async query(ctx, borrowerId){
+		var invokerID = ctx.stub.getCreator();
+
+		var borrower = ctx.borrowerList.getBorrower();
+
+		if(invokerID !== borrower.getBorrowerIdentity() && !borrower.checkConsent(invokerID)){
+			throw new Error("Invoker does not have consent to query.");
+		}
+		return borrower.toBuffer();
+	}
+
+
 	/*
 	 * The lender must initiate the loan first. The loan, however, is not
 	 * made ongoing at the moment, it requires that the borrower confirms
@@ -63,7 +75,7 @@ class PCRContract extends Contract {
 		var loan = Loan.createInstance(loanId, borrowerId, lenderId, loanAmount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount);
 
 		var borrower = ctx.borrowerList.getBorrower(borrowerId);
-		var lender = ctx.lenderlist.getLender(lenderId);
+		var lender = ctx.lenderList.getLender(lenderId);
 
 		var loanKey = loan.getKey();
 
@@ -99,7 +111,7 @@ class PCRContract extends Contract {
 		loan.setNextInstallmentDate(nextInstallmentDate);
 		loan.setRemainingAmount(loan.getRemainingAmount() - amountPaid);
 
-		await.ctx.loanList.updateLoan(loan);
+		await ctx.loanList.updateLoan(loan);
 	}
 
 	/*
@@ -121,14 +133,16 @@ class PCRContract extends Contract {
 		// 	throw new Error("Invoker is not a Borrower");
 		// }
 
+
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
+
 
 		borrower.giveConsent(lenderId);
 		lender.addConsent(invokerId);
 
-		await.ctx.borrowerList.updateBorrower();
-		await.ctx.lenderList.updateLender();
+		await ctx.borrowerList.updateBorrower();
+		await ctx.lenderList.updateLender();
 	} 
 
 	/*
@@ -153,11 +167,12 @@ class PCRContract extends Contract {
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
 
+
 		borrower.revokeConsent(lenderId);
 		lender.removeConsent(invokerId);
 
-		await.ctx.borrowerList.updateBorrower();
-		await.ctx.lenderList.updateLender();
+		await ctx.borrowerList.updateBorrower();
+		await ctx.lenderList.updateLender();
 	} 
 
 
@@ -181,7 +196,7 @@ class PCRContract extends Contract {
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
-		if (invokerID !=== loan.getBorrowerIdentity()) {
+		if (invokerID !== loan.getBorrowerIdentity()) {
 			throw new Error('Invoker is not a authorised borrower');
 		}
 
@@ -220,7 +235,7 @@ class PCRContract extends Contract {
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
-		if (invokerID !=== loan.getLenderIdentity()) {
+		if (invokerID !== loan.getLenderIdentity()) {
 			throw new Error('Invoker is not a authorised lender');
 		}
 
@@ -264,3 +279,5 @@ class PCRContract extends Contract {
 		await ctx.lenderList.addBorrower(lender);
 	}
 }
+
+module.exports = PCRContract;

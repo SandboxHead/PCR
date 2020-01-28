@@ -3,6 +3,16 @@
 // Utility class for ledger state
 const State = require('./../ledger-api/state.js');
 
+
+/**
+ * Lender:
+ * Identity: x509 certificate
+ * Pending Loans : [] of loans (Loans which are not approved yet by the borrower)
+ * Ongoing Loans :  [] of loans (Loans which are approved by the borrower and is ongoing)
+ * Prev Loans : [] of loans (Loans which are completed)
+ * Consents : [] of borrower of which consent has got
+ */
+
 class Lender extends State {
 	constructor(obj) {
 		super(Lender.getClass(), [obj.identity]);

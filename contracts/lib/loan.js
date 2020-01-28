@@ -29,6 +29,21 @@ class Installment {
 	}
 }
 
+/**
+ * Loan:
+ * Borrower's Identity: x509 certificate
+ * Lender's Identity: x509 certificate
+ * Loan Amount: double/int
+ * Asset of borrower :[] of assets
+ * interest: double
+ * Installments: [] of installments
+ * Current Remaining Amount ( After interest )
+ * Last installment date: Data
+ * Next installment date: Data
+ * Next installment amount: double/int
+ * state: {PENDING, FINISHED, ONGOING}
+ */
+
 class Loan extends State {
 	constructor(obj) {
 		super(Loan.getClass(), [obj.lenderIdentity, obj.borrowerIdentity, obj.loanCreationTime]);

@@ -107,9 +107,6 @@ class PCRContract extends Contract {
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
 
-		if(invokerId !== borrower.getBorrowerIdentity()){
-			throw new Error("Borrower is not invoker.")
-		}
 
 		borrower.giveConsent(lenderId);
 		lender.addConsent(invokerId);
@@ -128,9 +125,6 @@ class PCRContract extends Contract {
 		var borrower = ctx.borrowerList.getBorrower(invokerId);
 		var lender = ctx.lenderList.getLender(lenderId);
 
-		if(invokerId !== borrower.getBorrowerIdentity()){
-			throw new Error("Borrower is not invoker.")
-		}
 
 		borrower.revokeConsent(lenderId);
 		lender.removeConsent(invokerId);

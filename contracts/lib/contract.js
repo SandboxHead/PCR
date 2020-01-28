@@ -51,7 +51,7 @@ class PCRContract extends Contract {
 		var loan = Loan.createInstance(loanId, borrowerId, lenderId, loanAmount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount);
 
 		var borrower = ctx.borrowerList.getBorrower(borrowerId);
-		var lender = ctx.lenderlist.getLender(lenderId);
+		var lender = ctx.lenderList.getLender(lenderId);
 
 		var loanKey = loan.getKey();
 
@@ -79,7 +79,7 @@ class PCRContract extends Contract {
 		loan.setNextInstallmentDate(nextInstallmentDate);
 		loan.setRemainingAmount(loan.getRemainingAmount() - amountPaid);
 
-		await.ctx.loanList.updateLoan(loan);
+		await ctx.loanList.updateLoan(loan);
 	}
 
 	async giveConsent(ctx, lenderId) {
@@ -95,8 +95,8 @@ class PCRContract extends Contract {
 		borrower.giveConsent(lenderId);
 		lender.addConsent(invokerId);
 
-		await.ctx.borrowerList.updateBorrower();
-		await.ctx.lenderList.updateLender();
+		await ctx.borrowerList.updateBorrower();
+		await ctx.lenderList.updateLender();
 	} 
 
 	async revokeConsent(ctx, lenderId) {
@@ -112,8 +112,8 @@ class PCRContract extends Contract {
 		borrower.revokeConsent(lenderId);
 		lender.removeConsent(invokerId);
 
-		await.ctx.borrowerList.updateBorrower();
-		await.ctx.lenderList.updateLender();
+		await ctx.borrowerList.updateBorrower();
+		await ctx.lenderList.updateLender();
 	} 
 
 
@@ -126,7 +126,7 @@ class PCRContract extends Contract {
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
-		if (invokerID !=== loan.getBorrowerIdentity()) {
+		if (invokerID !== loan.getBorrowerIdentity()) {
 			throw new Error('Invoker is not a authorised borrower');
 		}
 
@@ -155,7 +155,7 @@ class PCRContract extends Contract {
 
 		var loan = await ctx.loanList.getLoan(loanKey);
 
-		if (invokerID !=== loan.getLenderIdentity()) {
+		if (invokerID !== loan.getLenderIdentity()) {
 			throw new Error('Invoker is not a authorised lender');
 		}
 
@@ -199,3 +199,5 @@ class PCRContract extends Contract {
 		await ctx.lenderList.addBorrower(lender);
 	}
 }
+
+module.exports = PCRContract;

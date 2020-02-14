@@ -35,30 +35,10 @@ class PCRContract extends Contract {
 		console.log('Instantiate the contract')
 	}
 
-<<<<<<< HEAD
 	async init(ctx) {
 		console.log('Instantiate the contract')
 	}
 
-=======
-	async query(ctx, borrowerId){
-		var invokerID = ctx.stub.getCreator();
-
-		var borrower = ctx.borrowerList.getBorrower();
-
-		if(invokerID !== borrower.getBorrowerIdentity() && !borrower.checkConsent(invokerID)){
-			throw new Error("Invoker does not have consent to query.");
-		}
-		return borrower.toBuffer();
-	}
-
-
-	/*
-	 * The lender must initiate the loan first. The loan, however, is not
-	 * made ongoing at the moment, it requires that the borrower confirms
-	 * the loan too. Currently, it'll be set to PENDING state.
-	 */
->>>>>>> d0a34cafb753c04a151bd660cd79e1649831998e
 	async initiateLoan(ctx, lenderId, borrowerId, loanAmount, assets, interest, lastInstallmentDate, nextInstallmentDate, nextInstallmentAmount) {
 		/*
 		 * Creates an instance of the loan with given values

@@ -1,7 +1,6 @@
 'use strict';
 
 const { Contract, Context } = require('fabric-contract-api');
-const shim = require('fabric-shim');
 
 const Borrower = require('./borrower.js');
 const Lender = require('./lender.js');
@@ -33,6 +32,10 @@ class PCRContract extends Contract {
 	}
 
 	async instantiate(ctx) {
+		console.log('Instantiate the contract')
+	}
+
+	async init(ctx) {
 		console.log('Instantiate the contract')
 	}
 
@@ -188,6 +191,7 @@ class PCRContract extends Contract {
 	}
 
 	async addLender(ctx, identity){
+		console.log("Inside add Lender chaincode")
 		var invokerID = ctx.stub.getCreator();
 
 		// if (ctx.stub.getAttributeValue('OU') !== 'Admin') {

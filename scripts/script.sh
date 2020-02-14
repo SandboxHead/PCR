@@ -111,7 +111,7 @@ echo "Installied Smart Contract: org2"
 echo "Instantiating Smart Contract: org2"
 
 
-peer chaincode instantiate -o orderer.rbi.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/rbi.com/orderers/orderer.rbi.com/msp/tlscacerts/tlsca.rbi.com-cert.pem -C $CHANNEL_NAME -n mycc -l node -v 1.0 -c '{"Args":[]}' -P "AND ('Org2MSP.member')"
+peer chaincode instantiate -o orderer.rbi.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/rbi.com/orderers/orderer.rbi.com/msp/tlscacerts/tlsca.rbi.com-cert.pem -C $CHANNEL_NAME -n mycc -l node -v 1.0 -c '{"Args":[]}' -P "AND ('Org0MSP.member')"
 
 echo "Instantiated Smart Contract: org2"
 

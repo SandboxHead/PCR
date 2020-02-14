@@ -21,6 +21,15 @@ class Asset{
 	}
 } 
 
+/** 
+ * Borrower:
+ * Identity: x509 certificate
+ * Consents : [] list of identity
+ * Pending loans : [] of loans (Loans which are initiated but not confirmed by borrower)
+ * Ongoing loans : [] of loans (Loans which are confirmed by the borrower)
+ * Prev Loans : [] of loans ( Loans which have been finished )
+ * Assets : [] of all the assets
+ * */ 
 class Borrower extends State {
 	constructor(obj) {
 		super(Borrower.getClass(), [obj.identity]);
